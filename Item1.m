@@ -96,25 +96,25 @@ figure;
               %subplot(m, n, p) --> Sirve para dividir una sola ventana (figure) en una cuadricula con varios graficos pequeños. M=Numero de filas; N=Numero de columnas; P=Posicion de celda dividida que quiero modificar
               %plot(x, y, 'estilo', ...) --> Crea un gráfico de líneas conectando puntos de coordenadas. X=Vector con los datos del eje "x"; Y=Vector con los datos del eje "y"; ESTILO=Diseño de la celda; LINEWIDTH=Define el grosor de la linea
 
-subplot(4,1,1); %Funcion que divide la ventana en 4 filas y 1 columna, y se posiciona en el cuarto espacio
+subplot(4,1,1); %Funcion que divide la ventana en 4 filas y 1 columna, y se posiciona en el primer espacio
   plot(vectorTiempo, senialEscalon, 'b', 'LineWidth', 1.5);
   h = xlabel("tiempo[S]", "fontweight", "bold"); set(h, "horizontalalignment", "right");
   ylabel("Tension[V]", "rotation", 0, "fontweight", "bold", "horizontalalignment", "right"); title('Circuito RLC - | Entrada Escalon | V_e(t)');
   grid on;
 
-subplot(4,1,2); %Funcion que divide la ventana en 4 filas y 1 columna, y se posiciona en el tercer espacio
+subplot(4,1,2); %Funcion que divide la ventana en 4 filas y 1 columna, y se posiciona en el segundo espacio
   plot(vectorTiempo, x(:,2), 'm', 'LineWidth', 1.5);
   h = xlabel("tiempo[S]", "fontweight", "bold"); set(h, "horizontalalignment", "right");
   ylabel("Tension[V]", "rotation", 0, "fontweight", "bold", "horizontalalignment", "right"); title('Circuito RLC - | Tension Capacitor | V_c(t)');
   grid on;
 
-subplot(4,1,3); %Funcion que divide la ventana en 4 filas y 1 columna, y se posiciona en el segundo espacio
+subplot(4,1,3); %Funcion que divide la ventana en 4 filas y 1 columna, y se posiciona en el tercer espacio
   plot(vectorTiempo, y, 'k', 'LineWidth', 1.5);
   h = xlabel("tiempo[S]", "fontweight", "bold"); set(h, "horizontalalignment", "right");
   ylabel("Tension[V]", "rotation", 0, "fontweight", "bold", "horizontalalignment", "right"); title('Circuito RLC - | Señal Salida | Vr(t)');
   grid on;
 
-subplot(4,1,4); %Funcion que divide la ventana en 4 filas y 1 columna, y se posiciona en el primer espacio
+subplot(4,1,4); %Funcion que divide la ventana en 4 filas y 1 columna, y se posiciona en el cuarto espacio
   plot(vectorTiempo, 10 * x(:,1), 'r', 'LineWidth', 1.5); %Multiplica la corriente por 1000 para verla en mA
   h = xlabel("tiempo[S]", "fontweight", "bold"); set(h, "horizontalalignment", "right");
   ylabel("Corriente [mA]", "rotation", 0, "fontweight", "bold", "horizontalalignment", "right"); title('Circuito RLC - | Corriente | i(t)');
