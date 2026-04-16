@@ -1,6 +1,7 @@
 % --------------------------- Circuito RLC serie ---------------------------
+% Ramiro Javier Baigorria - 45833004 - Ing. Computacion
 % Variables de ESTADO: x = [ i(t) , V_c(t) ]
-% Entrada: u = V_e(t)
+% Entrada escalon: u = V_e(t)
 % Salida: y = V_r(t) = R * i(t)
 %
 % Modelo en espacio de estados:
