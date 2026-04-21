@@ -27,16 +27,16 @@ K_I = abs(i(end)/maxU)    % K_I = valor final (asintótico) de la corriente.
 
 % ----------------------------------------------PUNTOS CLAVE(Tension Capacitor)----------------------------------------------
 % Tres valores de tiempo equidistantes a partir de que inicia la respuesta al escalón
-dt = 0.012
-t0_Vc = 0.123
+t0_Vc = 0.1
+dt = 0.01
 
 %t1_Vc = t0_Vc + (t0_Vc - (2 * dt))
 %t2_Vc = t0_Vc + (t0_Vc - (3 * dt))
 %t3_Vc = t0_Vc + (t0_Vc - (4 * dt))
 
 t1_Vc = t0_Vc + dt
-t2_Vc = t0_Vc + 2*dt
-t3_Vc = t0_Vc + 3*dt
+t2_Vc = t0_Vc + ( 2 * dt )
+t3_Vc = t0_Vc + ( 3 * dt )
 
 VcRespectoT1 = interp1(tiempo, Vc, t1_Vc)
 VcRespectoT2 = interp1(tiempo, Vc, t2_Vc)
@@ -49,15 +49,16 @@ k1 = (VcRespectoT1 /(K_Vc * maxU)) - 1 % Coeficiente normalizado respecto al val
 k2 = (VcRespectoT2 /(K_Vc * maxU)) - 1 % Coeficiente normalizado respecto al valor final
 k3 = (VcRespectoT3 /(K_Vc * maxU)) - 1 % Coeficiente normalizado respecto al valor final
 
-b = ( 4 * (k1^3) * k3 ) - ( 3 * k1^2 * k2^2 ) - ( 4 * k2^3 ) + ( k3^2 ) + ( 6 * k1 * k2 * k3 )
-
-%beta = ((2 * k1^3) + (3 * k1 * k2 ) + k3 - (sqrt(b))) / (sqrt(b))
+b = ( 4 * (k1^3) * k3 ) - ( 3 * (k1^2) * (k2^2) ) - ( 4 * (k2^3) ) + ( k3^2 ) + ( 6 * k1 * k2 * k3 )
 
 alpha1 = ((k1 * k2 ) + k3 - (sqrt(b))) / ( 2 * (( k1^2 ) + k2));
 alpha2 = ((k1 * k2 ) + k3 + (sqrt(b))) / ( 2 * (( k1^2 ) + k2));
+
+%beta = ((2 * k1^3) + (3 * k1 * k2 ) + k3 - (sqrt(b))) / (sqrt(b)) --> MAL
 beta = ( k1 + alpha2 ) / ( alpha1 - alpha2 )
-T1 = -( t1_Vc / (log(alpha1)))
-T2 = -( t1_Vc / (log(alpha2)))
+
+T1 = -( dt / (log(alpha1)))
+T2 = -( dt / (log(alpha2)))
 realT1 = real(T1);
 realT2 = real(T2);
 T3 = beta * ( realT1 - realT2 ) + realT1
@@ -65,16 +66,17 @@ T3 = beta * ( realT1 - realT2 ) + realT1
 
 % ----------------------------------------------PUNTOS CLAVE (Corriente)----------------------------------------------
 % Tres valores de corriente equidistantes a partir de que inicia la respuesta al escalón
-dt = 0.092
-t0Corriente = 0.104
+
+t0Corriente = 0.1015
+dtCorriente = 0.095
 
 %t1Corriente = 2 * (t0Corriente - dt) + dt
 %t2Corriente = 3 * (t0Corriente - dt) + dt
 %t3Corriente = 4 * (t0Corriente - dt) + dt
 
-t1Corriente = t0Corriente + dt
-t2Corriente = t0Corriente + 2*dt
-t3Corriente = t0Corriente + 3*dt
+t1Corriente = t0Corriente + dtCorriente
+t2Corriente = t0Corriente + 2*dtCorriente
+t3Corriente = t0Corriente + 3*dtCorriente
 
 IRespectoT1 = interp1(tiempo, i, t1Corriente)
 IRespectoT2 = interp1(tiempo, i, t2Corriente)
@@ -93,21 +95,23 @@ alpha1Corriente = ((k1Corriente * k2Corriente ) + k3Corriente - (sqrt(bCorriente
 alpha2Corriente = ((k1Corriente * k2Corriente ) + k3Corriente + (sqrt(bCorriente))) / ( 2 * (( k1Corriente^2 ) + k2Corriente));
 
 betaCorriente = ( k1Corriente + alpha2Corriente ) / ( alpha1Corriente - alpha2Corriente )
-T1Corriente = -( t1Corriente / (log(alpha1Corriente)))
-T2Corriente = -( t1Corriente / (log(alpha2Corriente)))
+T1Corriente = -( dtCorriente / (log(alpha1Corriente)))
+T2Corriente = -( dtCorriente / (log(alpha2Corriente)))
+
 realT1Corriente = real(T1Corriente);
 realT2Corriente = real(T2Corriente);
 T3Corriente = betaCorriente * ( realT1Corriente - realT2Corriente ) + realT1Corriente
 
 % ----------------------------------------------Sistema de segundo orden con 2 polos diferentes y un cero (Simulacion)----------------------------------------------
-G_Vc = (( K_Vc * (T3 * s + 1)) / (((realT1 * s) + 1) * (( realT2 * s ) + 1 ))); % Para T1 menor que T2 ; T3 distinto a T1 ; T3 distinto a T2
+G_Vc = ( K_Vc ) / (((realT1 * s) + 1) * (( realT2 * s ) + 1 )); % Para T1 menor que T2 ; T3 distinto a T1 ; T3 distinto a T2
 Vc_simulada = lsim(G_Vc, Ve, tiempo);
 
-G_I = (K_I*(T3Corriente * s + 1))/((realT1Corriente*s+1)*(realT2Corriente*s+1))
+G_I = ( K_I * (( T3Corriente * s ) + 1 )) / ((( realT1Corriente * s ) + 1 ) * (( realT2Corriente * s ) + 1))
+%G_I = ( K_I ) / ((( realT1Corriente * s ) + 1 ) * (( realT2Corriente * s ) + 1))
 I_simulada = lsim(G_I, Ve, tiempo);
 
 
-%-------Obtencion de parametros R, L y C-------%
+%----------------------------------------------Obtencion de parametros R, L y C----------------------------------------------
 %Sabmos que que G_I = C*s / ((LC * (s^2)) + (RC * s) + 1)
 
 % arreglo del numerador es [0 C 0]
@@ -126,12 +130,12 @@ subplot(3,1,1); %Funcion que divide la ventana en 3 filas y 1 columna, y se posi
   grid on;
 
 subplot(3,1,2); %Funcion que divide la ventana en 3 filas y 1 columna, y se posiciona en el segundo espacio
-  plot(tiempo, Vc, 'b', 'LineWidth', 1.5); hold on;
+  plot(tiempo, Vc, 'b', 'LineWidth', 1.7); hold on;
   plot(tiempo,Ve,'r--','LineWidth', 1.5);
-  plot(t1_Vc,VcRespectoT1, 'ro', 'MarkerSize', 2, 'LineWidth', 2);
-  plot(t2_Vc,VcRespectoT2, 'go', 'MarkerSize', 2, 'LineWidth', 2);
-  plot(t3_Vc,VcRespectoT3, 'yo', 'MarkerSize', 2, 'LineWidth', 2);
-  plot(tiempo, Vc_simulada, 'g', 'LineWidth', 1.5); hold off;
+  plot(t1_Vc,VcRespectoT1, 'kx', 'MarkerSize', 2, 'LineWidth', 9);
+  plot(t2_Vc,VcRespectoT2, 'kx', 'MarkerSize', 2, 'LineWidth', 9);
+  plot(t3_Vc,VcRespectoT3, 'kx', 'MarkerSize', 2, 'LineWidth', 9);
+  plot(tiempo, Vc_simulada, 'g--', 'LineWidth', 1.5); hold off;
   h = xlabel("Tiempo[S]", "fontweight", "bold"); set(h, "horizontalalignment", "right");
   ylabel("Tension[V]", "rotation", 0, "fontweight", "bold", "horizontalalignment", "right"); title('Tension Excel (Azul) VS Tension Simulada (Verde)');
   grid on;
@@ -139,9 +143,9 @@ subplot(3,1,2); %Funcion que divide la ventana en 3 filas y 1 columna, y se posi
 subplot(3,1,3); %Funcion que divide la ventana en 3 filas y 1 columna, y se posiciona en el tercer espacio
   plot(tiempo, i, 'b', 'LineWidth', 1.5); hold on;
   %plot(tiempo,Ve,'r--','LineWidth', 1.5);
-  plot(t1Corriente,IRespectoT1, 'ro', 'MarkerSize', 2, 'LineWidth', 2);
-  plot(t2Corriente,IRespectoT2, 'go', 'MarkerSize', 2, 'LineWidth', 2);
-  plot(t3Corriente,IRespectoT3, 'yo', 'MarkerSize', 2, 'LineWidth', 2);
+  %plot(t1Corriente,IRespectoT1, 'kx', 'MarkerSize', 2, 'LineWidth', 9);
+  %plot(t2Corriente,IRespectoT2, 'kx', 'MarkerSize', 2, 'LineWidth', 9);
+  %plot(t3Corriente,IRespectoT3, 'kx', 'MarkerSize', 2, 'LineWidth', 9);
   plot(tiempo, I_simulada, 'g', 'LineWidth', 1.5); hold off;
   h = xlabel("Tiempo[S]", "fontweight", "bold"); set(h, "horizontalalignment", "right");
   ylabel("Corriente[A]", "rotation", 0, "fontweight", "bold", "horizontalalignment", "right"); title('Corriente Excel (Azul) VS Corriente Simulada (Verde)');
