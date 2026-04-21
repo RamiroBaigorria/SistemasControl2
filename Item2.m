@@ -103,7 +103,7 @@ realT2Corriente = real(T2Corriente);
 T3Corriente = betaCorriente * ( realT1Corriente - realT2Corriente ) + realT1Corriente
 
 % ----------------------------------------------Sistema de segundo orden con 2 polos diferentes y un cero (Simulacion)----------------------------------------------
-G_Vc = ( K_Vc ) / (((realT1 * s) + 1) * (( realT2 * s ) + 1 )); % Para T1 menor que T2 ; T3 distinto a T1 ; T3 distinto a T2
+G_Vc = ( K_Vc ) / (((realT1 * s) + 1) * (( realT2 * s ) + 1 )) % Para T1 menor que T2 ; T3 distinto a T1 ; T3 distinto a T2
 Vc_simulada = lsim(G_Vc, Ve, tiempo);
 
 G_I = ( K_I * (( T3Corriente * s ) + 1 )) / ((( realT1Corriente * s ) + 1 ) * (( realT2Corriente * s ) + 1))
@@ -123,13 +123,13 @@ R = G_I.num{1}(2)/C
 
 % ----------------------------------------------Graficos----------------------------------------------
 
-subplot(3,1,1); %Funcion que divide la ventana en 3 filas y 1 columna, y se posiciona en el primer espacio
-  plot(tiempo,Ve,'r','LineWidth', 1.5); hold on;
-  h = xlabel("Tiempo[S]", "fontweight", "bold"); set(h, "horizontalalignment", "right");
-  ylabel("Tension[V]","rotation", 0, "fontweight", "bold", "horizontalalignment", "right"); title("Entrada Escalon");
-  grid on;
+%subplot(3,1,1); %Funcion que divide la ventana en 3 filas y 1 columna, y se posiciona en el primer espacio
+  %plot(tiempo,Ve,'r','LineWidth', 1.5); hold on;
+  %h = xlabel("Tiempo[S]", "fontweight", "bold"); set(h, "horizontalalignment", "right");
+  %ylabel("Tension[V]","rotation", 0, "fontweight", "bold", "horizontalalignment", "right"); title("Entrada Escalon");
+  %grid on;
 
-subplot(3,1,2); %Funcion que divide la ventana en 3 filas y 1 columna, y se posiciona en el segundo espacio
+subplot(2,1,1); %Funcion que divide la ventana en 3 filas y 1 columna, y se posiciona en el segundo espacio
   plot(tiempo, Vc, 'b', 'LineWidth', 1.7); hold on;
   plot(tiempo,Ve,'r--','LineWidth', 1.5);
   plot(t1_Vc,VcRespectoT1, 'kx', 'MarkerSize', 2, 'LineWidth', 9);
@@ -140,7 +140,7 @@ subplot(3,1,2); %Funcion que divide la ventana en 3 filas y 1 columna, y se posi
   ylabel("Tension[V]", "rotation", 0, "fontweight", "bold", "horizontalalignment", "right"); title('Tension Excel (Azul) VS Tension Simulada (Verde)');
   grid on;
 
-subplot(3,1,3); %Funcion que divide la ventana en 3 filas y 1 columna, y se posiciona en el tercer espacio
+subplot(2,1,2); %Funcion que divide la ventana en 3 filas y 1 columna, y se posiciona en el tercer espacio
   plot(tiempo, i, 'b', 'LineWidth', 1.5); hold on;
   %plot(tiempo,Ve,'r--','LineWidth', 1.5);
   %plot(t1Corriente,IRespectoT1, 'kx', 'MarkerSize', 2, 'LineWidth', 9);
