@@ -112,13 +112,7 @@ I_simulada = lsim(G_I, Ve, tiempo);
 
 
 %----------------------------------------------Obtencion de parametros R, L y C----------------------------------------------
-%Sabmos que que G_I = C*s / ((LC * (s^2)) + (RC * s) + 1)
 
-% arreglo del numerador es [0 C 0]
-C = G_I.num{1}(2)
-% arreglo del denominador es [LC RC 1]
-L = G_I.num{1}(1)/C
-R = G_I.num{1}(2)/C
 
 
 % ----------------------------------------------Graficos----------------------------------------------
