@@ -100,17 +100,6 @@ Torque_p = torque_vector(idx_plot);
 
 figure(1);
 
-subplot(1,1,1);
-  plot(tiempo, Vc, 'b', 'LineWidth', 1.7); hold on;
-  plot(tiempo,Ve,'r--','LineWidth', 1.5);
-  plot(t1_Vc,VcRespectoT1, 'kx', 'MarkerSize', 4, 'LineWidth', 7);
-  plot(t2_Vc,VcRespectoT2, 'kx', 'MarkerSize', 4, 'LineWidth', 7);
-  plot(t3_Vc,VcRespectoT3, 'kx', 'MarkerSize', 4, 'LineWidth', 7);
-  plot(tiempo, Vc_simulada, 'g--', 'LineWidth', 1.5); hold off;
-  h = xlabel("Tiempo[S]", "fontweight", "bold"); set(h, "horizontalalignment", "right");
-  ylabel("Tension[V]", "rotation", 0, "fontweight", "bold", "horizontalalignment", "right"); title('Entrada Escalon(Rojo) VS Tension Excel (Azul) VS Tension Simulada (Verde)');
-  grid on;
-
 subplot(3,1,1);
   plot(tiempo_p, i_p * 1e3, 'b', 'LineWidth', 1.4);
   xline(tiempo_vector(wrCero), '--r', 'LineWidth', 1.2);
